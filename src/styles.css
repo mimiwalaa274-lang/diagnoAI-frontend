@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 196 62% 98%;
+    --foreground: 203 48% 16%;
+    --card: 0 0% 100%;
+    --card-foreground: 203 48% 16%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 203 48% 16%;
+    --primary: 190 82% 32%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 154 42% 92%;
+    --secondary-foreground: 174 70% 21%;
+    --muted: 190 36% 94%;
+    --muted-foreground: 200 18% 42%;
+    --accent: 170 60% 92%;
+    --accent-foreground: 178 70% 22%;
+    --destructive: 0 76% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 190 26% 86%;
+    --input: 190 26% 86%;
+    --ring: 190 82% 32%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@layer components {
+  .page-shell {
+    @apply container py-8 md:py-12;
+  }
+
+  .section-title {
+    @apply text-2xl font-semibold tracking-normal text-slate-900 md:text-3xl;
+  }
+
+  .medical-band {
+    @apply bg-gradient-to-br from-white via-cyan-50 to-emerald-50;
+  }
+}
