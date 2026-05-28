@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, BadgeCheck, ClipboardList, FileText, Printer, Stethoscope } from "lucide-react";
+import { ArrowLeft, ClipboardList, FileText, Printer, Stethoscope } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CandidateChart } from "@/components/CandidateChart";
 import { ConfidenceGauge } from "@/components/ConfidenceGauge";
-import { DisclaimerCard } from "@/components/DisclaimerCard";
+
 import { FindingChip } from "@/components/FindingChip";
 import { RecommendedTestsCard } from "@/components/RecommendedTestsCard";
 import { ResultSummaryCard } from "@/components/ResultSummaryCard";
+import { PatientStorytellingDashboard } from "@/components/PatientStorytellingDashboard";
 import { WarningPanel } from "@/components/WarningPanel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -153,19 +154,7 @@ export function ResultsPage() {
         </Card>
       )}
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BadgeCheck className="h-5 w-5 text-primary" />
-            Patient-friendly explanation
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="leading-7 text-slate-700">{result.llm_explanation}</p>
-        </CardContent>
-      </Card>
-
-      <DisclaimerCard text={result.disclaimer} />
+      <PatientStorytellingDashboard result={result} />
 
       <Card className="shadow-none">
         <CardContent className="flex gap-3 p-4 text-sm text-muted-foreground">
