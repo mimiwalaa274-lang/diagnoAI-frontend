@@ -363,6 +363,87 @@ const DISEASE_RECOMMENDATIONS: Record<string, Recommendation> = {
       "Share these lab results with your primary care physician for a full evaluation.",
       "Schedule routine annual checkups to track your key health markers."
     ]
+  },
+  healthy_diabetes: {
+    diet: [
+      "Focus on whole grains, fresh vegetables, and lean proteins to support stable blood sugar.",
+      "Incorporate healthy fibers like legumes, seeds, and nuts."
+    ],
+    avoid: [
+      "Excessive intake of sugar-sweetened drinks, processed snacks, and trans-fats."
+    ],
+    lifestyle: [
+      "Stay active with regular physical exercise (150 minutes per week).",
+      "Manage stress levels and prioritize adequate nightly rest."
+    ],
+    followUp: [
+      "Schedule routine annual wellness exams and fasting blood glucose screenings."
+    ]
+  },
+  healthy_cbc: {
+    diet: [
+      "Eat a well-balanced diet rich in iron, folate, and Vitamin B12 (leafy greens, eggs, lean meats).",
+      "Consume fruits rich in Vitamin C to support optimal iron absorption."
+    ],
+    avoid: [
+      "Highly processed foods lacking essential micronutrients and vitamins."
+    ],
+    lifestyle: [
+      "Ensure adequate sleep (7-9 hours) to maintain body energy levels.",
+      "Engage in regular physical activity to support blood circulation and vitality."
+    ],
+    followUp: [
+      "Incorporate checking a complete blood count (CBC) into your yearly physical checkup."
+    ]
+  },
+  healthy_kidney: {
+    diet: [
+      "Maintain a balanced, lower-sodium diet using fresh, whole foods.",
+      "Drink adequate fluids (mostly water) to support natural waste filtration."
+    ],
+    avoid: [
+      "Overconsumption of sodium (salt), heavily processed foods, and excessive protein powders."
+    ],
+    lifestyle: [
+      "Keep blood pressure and blood sugar in a healthy range.",
+      "Stay properly hydrated and avoid unnecessary use of NSAID pain relievers."
+    ],
+    followUp: [
+      "Monitor kidney markers (Creatinine, eGFR) during standard annual physical exams."
+    ]
+  },
+  healthy_liver: {
+    diet: [
+      "Incorporate antioxidant-rich foods like leafy greens, berries, garlic, and green tea.",
+      "Use healthy fats such as extra virgin olive oil in moderation."
+    ],
+    avoid: [
+      "Excessive alcohol intake, which directly stresses liver cells.",
+      "Highly processed foods containing high-fructose corn syrup and saturated fats."
+    ],
+    lifestyle: [
+      "Maintain a healthy weight and engage in regular physical activity.",
+      "Limit exposure to toxins and avoid taking self-prescribed medications."
+    ],
+    followUp: [
+      "Include standard liver function markers (ALT, AST) in routine annual blood work."
+    ]
+  },
+  healthy_thyroid: {
+    diet: [
+      "Focus on a balanced diet containing trace minerals like selenium, zinc, and dietary iodine.",
+      "Incorporate seafood, lean proteins, and organic dairy products."
+    ],
+    avoid: [
+      "Unusually high doses of iodine supplements unless explicitly recommended by a doctor."
+    ],
+    lifestyle: [
+      "Practice stress-management techniques to support endocrine health.",
+      "Ensure consistent, high-quality sleep to maintain proper hormone regulation."
+    ],
+    followUp: [
+      "Have your thyroid hormone levels (TSH) checked during regular wellness checkups."
+    ]
   }
 };
 
@@ -370,37 +451,45 @@ function getRecommendations(condition: string, panel: string): Recommendation {
   const condLower = condition.toLowerCase();
   const panelLower = panel.toLowerCase();
 
-  if (condLower.includes("diabetes")) {
-    return DISEASE_RECOMMENDATIONS.diabetes;
-  }
-  if (condLower.includes("anemia")) {
-    return DISEASE_RECOMMENDATIONS.anemia;
-  }
-  if (condLower.includes("infection") || condLower.includes("leukemia")) {
-    return DISEASE_RECOMMENDATIONS.infection;
-  }
-  if (condLower.includes("kidney") || panelLower.includes("kidney")) {
-    return DISEASE_RECOMMENDATIONS.kidney;
-  }
-  if (condLower.includes("liver") || panelLower.includes("liver")) {
-    return DISEASE_RECOMMENDATIONS.liver;
-  }
-  if (condLower.includes("hypothyroid")) {
-    return DISEASE_RECOMMENDATIONS.thyroid_hypo;
-  }
-  if (condLower.includes("hyperthyroid")) {
-    return DISEASE_RECOMMENDATIONS.thyroid_hyper;
-  }
-  if (condLower.includes("thyroid") || panelLower.includes("thyroid")) {
-    return DISEASE_RECOMMENDATIONS.thyroid_general;
+  // Check if the condition is a specific disease (NOT healthy/normal)
+  const isHealthyOrNormal = 
+    condLower.includes("healthy") || 
+    condLower.includes("normal") || 
+    condLower.includes("balanced") || 
+    condLower.includes("euthyroid") ||
+    condLower === "unknown" || 
+    condLower === "";
+
+  if (!isHealthyOrNormal) {
+    if (condLower.includes("diabetes") || condLower.includes("hyperglycemia")) {
+      return DISEASE_RECOMMENDATIONS.diabetes;
+    }
+    if (condLower.includes("anemia")) {
+      return DISEASE_RECOMMENDATIONS.anemia;
+    }
+    if (condLower.includes("infection") || condLower.includes("leukemia")) {
+      return DISEASE_RECOMMENDATIONS.infection;
+    }
+    if (condLower.includes("kidney") || condLower.includes("ckd")) {
+      return DISEASE_RECOMMENDATIONS.kidney;
+    }
+    if (condLower.includes("liver")) {
+      return DISEASE_RECOMMENDATIONS.liver;
+    }
+    if (condLower.includes("hypothyroid")) {
+      return DISEASE_RECOMMENDATIONS.thyroid_hypo;
+    }
+    if (condLower.includes("hyperthyroid")) {
+      return DISEASE_RECOMMENDATIONS.thyroid_hyper;
+    }
   }
 
-  // Fallback to panel-based if condition is generic or unknown
-  if (panelLower.includes("diabetes")) return DISEASE_RECOMMENDATIONS.diabetes;
-  if (panelLower.includes("cbc")) return DISEASE_RECOMMENDATIONS.anemia;
-  if (panelLower.includes("kidney")) return DISEASE_RECOMMENDATIONS.kidney;
-  if (panelLower.includes("liver")) return DISEASE_RECOMMENDATIONS.liver;
-  if (panelLower.includes("thyroid")) return DISEASE_RECOMMENDATIONS.thyroid_general;
+  // Fallback to panel-specific healthy recommendations
+  if (panelLower.includes("diabetes")) return DISEASE_RECOMMENDATIONS.healthy_diabetes;
+  if (panelLower.includes("cbc")) return DISEASE_RECOMMENDATIONS.healthy_cbc;
+  if (panelLower.includes("kidney")) return DISEASE_RECOMMENDATIONS.healthy_kidney;
+  if (panelLower.includes("liver")) return DISEASE_RECOMMENDATIONS.healthy_liver;
+  if (panelLower.includes("thyroid")) return DISEASE_RECOMMENDATIONS.healthy_thyroid;
 
   return DISEASE_RECOMMENDATIONS.default;
 }
